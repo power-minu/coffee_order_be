@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.prgrms.coffee_order_be.model.Product;
 import org.prgrms.coffee_order_be.model.dto.ProductCreateRequestDto;
 import org.prgrms.coffee_order_be.model.dto.ProductListResponseDto;
+import org.prgrms.coffee_order_be.model.dto.ProductSingleResponseDto;
 import org.prgrms.coffee_order_be.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -27,5 +27,15 @@ public class ProductService {
         }
 
         return productListResponseDtos;
+    }
+
+    public ProductSingleResponseDto findProduct(UUID uuid) {
+        Optional<Product> byId = productRepository.findById(uuid);
+
+        if (byId.isEmpty()) {
+            return null;
+        }
+
+        return new ProductSingleResponseDto(byId.get().getProductId(), byId.get().getProductName(), byId.get().getCategory().name(), byId.get().getPrice(), byId.get().getDescription());
     }
 }
