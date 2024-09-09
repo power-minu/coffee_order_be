@@ -15,6 +15,7 @@ import org.prgrms.coffee_order_be.repository.OrderRepository;
 import org.prgrms.coffee_order_be.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -106,5 +107,29 @@ public class OrderService {
 
         orderRepository.delete(order);
         return true;
+    }
+
+    @Transactional
+    public List<OrderResponseDto> deliverOrder() {
+        List<Order> orders = new ArrayList<>();
+        List<OrderResponseDto> res = new ArrayList<>();
+
+        if (LocalDateTime.now().getHour() >= 14) {
+            orders = orderRepository.findOrdersBetweenTimes(
+                    LocalDateTime.now().minusDays(1).withHour(14).withMinute(0).withSecond(0).withNano(0),
+                    LocalDateTime.now().withHour(14).withMinute(0).withSecond(0).withNano(0)
+            );
+        } else orders = orderRepository.findOrdersBetweenTimes(
+                LocalDateTime.of(2000, 1, 1, 0, 0),
+                LocalDateTime.now().minusDays(1).withHour(14).withMinute(0).withSecond(0).withNano(0)
+        );
+
+        System.out.println(orders);
+
+        for (Order o : orders) {
+            o.setOrderStatus(OrderStatus.배송시작);
+            res.add(new OrderResponseDto(orderRepository.save(o)));
+        }
+        return res;
     }
 }

@@ -66,4 +66,13 @@ public class OrderController {
                 .status(HttpStatus.OK)
                 .body("삭제되었습니다.");
     }
+
+    @PutMapping("")
+    public ResponseEntity<List<OrderResponseDto>> orderDeliver() {
+        List<OrderResponseDto> orderResponseDtos = orderService.deliverOrder();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(orderResponseDtos);
+    }
 }
