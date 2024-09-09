@@ -43,4 +43,11 @@ public class ProductController {
                 .status(HttpStatus.OK)
                 .body(productService.findProduct(uuid));
     }
+
+    @PutMapping("{uuid}")
+    public ResponseEntity<ProductSingleResponseDto> productModify(@PathVariable UUID uuid, @RequestBody ProductCreateRequestDto productCreateRequestDto) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.modifyProduct(uuid, productCreateRequestDto));
+    }
 }

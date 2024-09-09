@@ -1,6 +1,7 @@
 package org.prgrms.coffee_order_be.service;
 
 import lombok.RequiredArgsConstructor;
+import org.prgrms.coffee_order_be.model.Category;
 import org.prgrms.coffee_order_be.model.Product;
 import org.prgrms.coffee_order_be.model.dto.ProductCreateRequestDto;
 import org.prgrms.coffee_order_be.model.dto.ProductListResponseDto;
@@ -37,5 +38,30 @@ public class ProductService {
         }
 
         return new ProductSingleResponseDto(byId.get().getProductId(), byId.get().getProductName(), byId.get().getCategory().name(), byId.get().getPrice(), byId.get().getDescription());
+    }
+
+    public ProductSingleResponseDto modifyProduct(UUID uuid, ProductCreateRequestDto productCreateRequestDto) {
+        Optional<Product> byId = productRepository.findById(uuid);
+        if (byId.isEmpty()) {
+            return null;
+        }
+
+        Product product = byId.get();
+
+        if (productCreateRequestDto.getProductName() != null && productCreateRequestDto.getProductName() != product.getProductName()) {
+            product.setProductName(productCreateRequestDto.getProductName());
+        }
+        if (productCreateRequestDto.getCategory() != null && productCreateRequestDto.getCategory() != product.getCategory().name()) {
+            product.setCategory(Category.valueOf(productCreateRequestDto.getCategory()));
+        }
+        if (productCreateRequestDto.getPrice() != null && productCreateRequestDto.getPrice() != product.getPrice()) {
+            product.setPrice(productCreateRequestDto.getPrice());
+        }
+        if (productCreateRequestDto.getDescription() != null && productCreateRequestDto.getDescription() != product.getDescription()) {
+            product.setDescription(productCreateRequestDto.getDescription());
+        }
+        Product saved = productRepository.save(product);
+
+        return new ProductSingleResponseDto(saved.getProductId(), saved.getProductName(), saved.getCategory().name(), saved.getPrice(), saved.getDescription());
     }
 }

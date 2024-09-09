@@ -1,10 +1,7 @@
 package org.prgrms.coffee_order_be.model;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -20,16 +17,20 @@ public class Product {
     private UUID productId;
 
     @Column(name = "product_name", length = 20, nullable = false)
+    @Setter
     private String productName;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "category", length = 50, nullable = false)
+    @Setter
     private Category category;
 
     @Column(name = "price", nullable = false)
+    @Setter
     private Long price;
 
     @Column(name = "description", length = 500)
+    @Setter
     private String description;
 
     @Column(name = "created_at", nullable = false)
