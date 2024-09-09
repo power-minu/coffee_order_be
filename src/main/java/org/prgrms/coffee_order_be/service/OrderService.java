@@ -9,6 +9,7 @@ import org.prgrms.coffee_order_be.model.OrderStatus;
 import org.prgrms.coffee_order_be.model.Product;
 import org.prgrms.coffee_order_be.model.dto.OrderCreateRequestDto;
 import org.prgrms.coffee_order_be.model.dto.OrderResponseDto;
+import org.prgrms.coffee_order_be.model.dto.OrderUpdateRequestDto;
 import org.prgrms.coffee_order_be.repository.OrderItemRepository;
 import org.prgrms.coffee_order_be.repository.OrderRepository;
 import org.prgrms.coffee_order_be.repository.ProductRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -69,6 +71,24 @@ public class OrderService {
     }
 
     public OrderResponseDto findOrder(UUID uuid) {
-        return new OrderResponseDto(orderRepository.findByOrderIdWithOrderItems(uuid));
+        return new OrderResponseDto(orderRepository.findByOrderIdWithOrderItems(uuid).get());
+    }
+
+    public OrderResponseDto modifyOrder(UUID uuid, OrderUpdateRequestDto orderUpdateRequestDto) {
+        Optional<Order> find = orderRepository.findByOrderIdWithOrderItems(uuid);
+
+        if (find.isEmpty()) {
+            return null;
+        }
+        Order order = find.get();
+
+        if (orderUpdateRequestDto.getAddress() != null && orderUpdateRequestDto.getAddress() != order.getAddress()) {
+            order.setAddress(orderUpdateRequestDto.getAddress());
+        }
+        if (orderUpdateRequestDto.getPostcode() != null && orderUpdateRequestDto.getPostcode() != order.getPostcode()) {
+            order.setPostcode(orderUpdateRequestDto.getPostcode());
+        }
+
+        return new OrderResponseDto(orderRepository.save(order));
     }
 }

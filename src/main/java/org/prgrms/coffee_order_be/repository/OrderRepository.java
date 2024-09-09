@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface OrderRepository extends JpaRepository<Order, UUID> {
@@ -15,5 +16,5 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
     List<Order> findAllByEmailWithOrderItems(@Param("email") String email);
 
     @Query("SELECT o FROM Order o LEFT JOIN FETCH o.orderItems WHERE o.orderId = :orderId")
-    Order findByOrderIdWithOrderItems(@Param("orderId") UUID orderId);
+    Optional<Order> findByOrderIdWithOrderItems(@Param("orderId") UUID orderId);
 }

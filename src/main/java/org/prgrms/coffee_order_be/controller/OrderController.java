@@ -3,6 +3,7 @@ package org.prgrms.coffee_order_be.controller;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.coffee_order_be.model.dto.OrderCreateRequestDto;
 import org.prgrms.coffee_order_be.model.dto.OrderResponseDto;
+import org.prgrms.coffee_order_be.model.dto.OrderUpdateRequestDto;
 import org.prgrms.coffee_order_be.service.OrderService;
 import org.prgrms.coffee_order_be.service.ProductService;
 import org.springframework.http.HttpStatus;
@@ -46,5 +47,12 @@ public class OrderController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(orderService.findOrder(uuid));
+    }
+
+    @PutMapping("/{uuid}")
+    public ResponseEntity<OrderResponseDto> orderModify(@PathVariable UUID uuid, @RequestBody OrderUpdateRequestDto orderUpdateRequestDto) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(orderService.modifyOrder(uuid, orderUpdateRequestDto));
     }
 }
