@@ -1,10 +1,7 @@
 package org.prgrms.coffee_order_be.model;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -55,5 +52,24 @@ public class Order {
     public void removeOrderItem(OrderItem item) {
         orderItems.remove(item);
         item.setOrder(null);
+    }
+
+    @Builder
+    public Order(String email, String address, String postcode, OrderStatus orderStatus) {
+        this.email = email;
+        this.address = address;
+        this.postcode = postcode;
+        this.orderStatus = orderStatus;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 }
