@@ -14,6 +14,8 @@ import org.prgrms.coffee_order_be.repository.OrderRepository;
 import org.prgrms.coffee_order_be.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -53,5 +55,16 @@ public class OrderService {
         Hibernate.initialize(saved.getOrderItems());
 
         return new OrderResponseDto(saved);
+    }
+
+    public List<OrderResponseDto> findOrderList(String email) {
+        List<OrderResponseDto> res = new ArrayList<>();
+
+        List<Order> allByEmail = orderRepository.findAllByEmailWithOrderItems(email);
+        for (Order o : allByEmail) {
+            res.add(new OrderResponseDto(o));
+        }
+
+        return res;
     }
 }
