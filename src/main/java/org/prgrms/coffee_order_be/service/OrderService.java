@@ -67,4 +67,8 @@ public class OrderService {
 
         return res;
     }
+
+    public OrderResponseDto findOrder(UUID uuid) {
+        return new OrderResponseDto(orderRepository.findByOrderIdWithOrderItems(uuid));
+    }
 }

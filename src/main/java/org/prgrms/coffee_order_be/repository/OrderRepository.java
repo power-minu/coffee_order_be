@@ -13,4 +13,7 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
 
     @Query("SELECT o FROM Order o LEFT JOIN FETCH o.orderItems WHERE o.email = :email")
     List<Order> findAllByEmailWithOrderItems(@Param("email") String email);
+
+    @Query("SELECT o FROM Order o LEFT JOIN FETCH o.orderItems WHERE o.orderId = :orderId")
+    Order findByOrderIdWithOrderItems(@Param("orderId") UUID orderId);
 }
