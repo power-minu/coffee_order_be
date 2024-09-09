@@ -64,4 +64,14 @@ public class ProductService {
 
         return new ProductSingleResponseDto(saved.getProductId(), saved.getProductName(), saved.getCategory().name(), saved.getPrice(), saved.getDescription());
     }
+
+    public boolean removeProduct(UUID uuid) {
+        Optional<Product> byId = productRepository.findById(uuid);
+        if (byId.isEmpty()) {
+            return false;
+        }
+
+        productRepository.delete(byId.get());
+        return true;
+    }
 }

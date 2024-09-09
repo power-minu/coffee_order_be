@@ -44,10 +44,21 @@ public class ProductController {
                 .body(productService.findProduct(uuid));
     }
 
-    @PutMapping("{uuid}")
+    @PutMapping("/{uuid}")
     public ResponseEntity<ProductSingleResponseDto> productModify(@PathVariable UUID uuid, @RequestBody ProductCreateRequestDto productCreateRequestDto) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.modifyProduct(uuid, productCreateRequestDto));
+    }
+
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity<String> productRemove(@PathVariable UUID uuid) {
+        if (!productService.removeProduct(uuid)) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("없는 제품입니다.");
+        } else return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body("삭제되었습니다.");
     }
 }
