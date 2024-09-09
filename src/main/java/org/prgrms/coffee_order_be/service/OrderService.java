@@ -91,4 +91,17 @@ public class OrderService {
 
         return new OrderResponseDto(orderRepository.save(order));
     }
+
+    @Transactional
+    public boolean removeOrder(UUID uuid) {
+        Optional<Order> find = orderRepository.findByOrderIdWithOrderItems(uuid);
+
+        if (find.isEmpty()) {
+            return false;
+        }
+        Order order = find.get();
+
+        orderRepository.delete(order);
+        return true;
+    }
 }

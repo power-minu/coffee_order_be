@@ -55,4 +55,15 @@ public class OrderController {
                 .status(HttpStatus.OK)
                 .body(orderService.modifyOrder(uuid, orderUpdateRequestDto));
     }
+
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity<String> orderModify(@PathVariable UUID uuid) {
+        if (orderService.removeOrder(uuid) == false) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("없는 주문입니다.");
+        } else return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("삭제되었습니다.");
+    }
 }
