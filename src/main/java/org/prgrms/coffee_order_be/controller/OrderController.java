@@ -61,7 +61,7 @@ public class OrderController {
         if (orderService.removeOrder(uuid) == false) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body("없는 주문입니다.");
+                    .body("없는 주문이거나, 배송이 시작되어 취소할 수 없는 주문입니다.");
         } else return ResponseEntity
                 .status(HttpStatus.OK)
                 .body("삭제되었습니다.");

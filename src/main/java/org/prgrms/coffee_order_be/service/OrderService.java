@@ -100,6 +100,9 @@ public class OrderService {
             return false;
         }
         Order order = find.get();
+        if (order.getOrderStatus() == OrderStatus.배송시작) {
+            return false;
+        }
 
         orderRepository.delete(order);
         return true;
